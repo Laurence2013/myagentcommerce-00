@@ -1,1 +1,59 @@
-<router-outlet />
+<main class="main">
+  <div class="content">
+    <div class="left-side">
+      <div class="logo-container">
+        <svg class="angular-logo" viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="125,30 125,30 125,30 31.9,63.2 46.1,186.3 125,230 125,230 125,230 203.9,186.3 218.1,63.2" fill="#DD0031" />
+          <polygon points="125,30 125,52.2 125,52.2 125,230 203.9,186.3 218.1,63.2" fill="#C3002F" />
+          <path d="M125,52.2 L66.8,182.6 L91.6,182.6 L103.4,151.7 L146.6,151.7 L158.4,182.6 L183.2,182.6 L125,52.2 Z M138.4,130.6 L111.6,130.6 L125,97.8 L138.4,130.6 Z" fill="#FFFFFF" />
+        </svg>
+      </div>
+      <h1>Hello, {{ title() }}</h1>
+      <p>Congratulations! Your Angular application is running successfully.</p>
+      
+      <div class="badges">
+        <span class="badge">v22.0.0</span>
+        <span class="badge">Standalone</span>
+        <span class="badge">Vite + Vitest</span>
+      </div>
+    </div>
+
+    <div class="right-side">
+      <h2>Next Steps</h2>
+      <p>Here are some links to help you get started with your project:</p>
+
+      <div class="card-grid">
+        <a class="card" href="https://angular.dev" target="_blank" rel="noopener">
+          <span class="card-icon" aria-hidden="true">📚</span>
+          <div class="card-content">
+            <h3>Learn Angular</h3>
+            <p>Explore the official documentation and guides.</p>
+          </div>
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a class="card" href="https://angular.dev/cli" target="_blank" rel="noopener">
+          <span class="card-icon" aria-hidden="true">💻</span>
+          <div class="card-content">
+            <h3>CLI Reference</h3>
+            <p>Learn about development, building, and testing commands.</p>
+          </div>
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a class="card" href="https://angular.dev/blog" target="_blank" rel="noopener">
+          <span class="card-icon" aria-hidden="true">📣</span>
+          <div class="card-content">
+            <h3>Angular Blog</h3>
+            <p>Keep up to date with the latest news from the team.</p>
+          </div>
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Powered by Angular • Created with Antigravity</p>
+  </footer>
+</main>
