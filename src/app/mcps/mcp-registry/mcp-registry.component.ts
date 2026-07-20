@@ -1,7 +1,9 @@
-import { Component, inject, signal, effect } from '@angular/core';
+import { Component, inject, signal, computed, effect } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { McpRegistryService } from './mcp-registry.service';
 import type { McpServerResponse } from './interfaces/mcp-registry.interface';
+
+export type CategoryType = 'all' | 'transactionEscrow' | 'catalogInfrastructure' | 'pricingB2bRules';
 
 @Component({
   selector: 'app-mcp-registry',
@@ -21,13 +23,27 @@ export class McpRegistryComponent {
 
   public readonly searchInputValue = signal<string>('https://registry.modelcontextprotocol.io/');
   public readonly hasFetched = signal<boolean>(false);
+  public readonly selectedCategory = signal<CategoryType>('all');
+
+  /**
+   * Derived state: filters servers based on selected commerce category.
+   */
+  public readonly displayedServers = computed(() => {
+    const allServers = this.servers();
+    const cat = this.selectedCategory();
+    if (cat === 'all') {
+      return allServers;
+    }
+    const categorization = this.registryService.categorizeCommerceServers(allServers);
+    return categorization[cat] || [];
+  });
 
   constructor() {
     effect(() => {
-      const serverCount = this.servers().length;
+      const serverCount = this.displayedServers().length;
       const loading = this.isLoading();
       const err = this.error();
-      console.log(`[McpRegistryComponent] 📊 UI State -> isLoading: ${loading}, servers: ${serverCount}, error: ${err ?? 'none'}`);
+      console.log(`[McpRegistryComponent] 📊 UI State -> isLoading: ${loading}, displayedServers: ${serverCount}, category: ${this.selectedCategory()}, error: ${err ?? 'none'}`);
     });
   }
 
@@ -42,6 +58,15 @@ export class McpRegistryComponent {
     }
   }
 
+  public selectCategory(cat: CategoryType): void {
+    console.log(`[McpRegistryComponent] 🏷️ Category selected: ${cat}`);
+    this.selectedCategory.set(cat);
+    this.hasFetched.set(true);
+    if (this.servers().length === 0 && !this.isLoading()) {
+      this.registryService.fetchServers();
+    }
+  }
+
   public clearSearch(): void {
     console.log('[McpRegistryComponent] 🧹 Search cleared');
     this.searchInputValue.set('');
@@ -49,9 +74,10 @@ export class McpRegistryComponent {
   }
 
   public onFetchServers(): void {
-    console.log('[McpRegistryComponent] 🔄 "Get Registry" clicked.');
+    console.log('[McpRegistryComponent] 🔄 "Get Commerce MCP" clicked.');
     this.hasFetched.set(true);
     this.registryService.fetchServers();
   }
 }
+
 

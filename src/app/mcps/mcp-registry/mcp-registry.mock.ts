@@ -233,5 +233,96 @@ export const MOCK_MCP_SERVERS: McpServerResponse[] = [
         isLatest: true
       }
     }
+  },
+  {
+    server: {
+      name: 'agentic-commerce/server-stripe-payment',
+      title: 'Stripe Payment & Escrow Gateway',
+      description: 'Agentic payment processing, tokenized checkout, cart invoice generation, AP2 & L402 protocol support for automated transactions.',
+      version: '1.0.0',
+      websiteUrl: 'https://github.com/agentic-commerce/server-stripe-payment',
+      packages: [
+        {
+          registryType: 'npm',
+          identifier: '@agentic-commerce/server-stripe-payment',
+          version: '1.0.0',
+          transport: { type: 'stdio' },
+          environmentVariables: [
+            { name: 'STRIPE_SECRET_KEY', description: 'Stripe API secret key for tokenized payments' }
+          ]
+        }
+      ],
+      repository: {
+        url: 'https://github.com/agentic-commerce/server-stripe-payment',
+        source: 'github'
+      }
+    },
+    _meta: {
+      'io.modelcontextprotocol.registry/official': {
+        status: 'active',
+        publishedAt: '2026-02-01T00:00:00Z',
+        updatedAt: '2026-06-15T00:00:00Z',
+        isLatest: true
+      }
+    }
+  },
+  {
+    server: {
+      name: 'agentic-commerce/server-catalog-infrastructure',
+      title: 'Shopify & Medusa Catalog Infrastructure',
+      description: 'Unified catalog inventory management across Shopify, WooCommerce, and Medusa. Supports SKU search, GTIN tracking, and product updates.',
+      version: '1.1.0',
+      websiteUrl: 'https://github.com/agentic-commerce/server-catalog-infrastructure',
+      packages: [
+        {
+          registryType: 'npm',
+          identifier: '@agentic-commerce/server-catalog-infrastructure',
+          version: '1.1.0',
+          transport: { type: 'stdio' }
+        }
+      ],
+      repository: {
+        url: 'https://github.com/agentic-commerce/server-catalog-infrastructure',
+        source: 'github'
+      }
+    },
+    _meta: {
+      'io.modelcontextprotocol.registry/official': {
+        status: 'active',
+        publishedAt: '2026-03-01T00:00:00Z',
+        updatedAt: '2026-07-01T00:00:00Z',
+        isLatest: true
+      }
+    }
+  },
+  {
+    server: {
+      name: 'agentic-commerce/server-b2b-pricing',
+      title: 'A2A Dynamic Pricing & Negotiation',
+      description: 'B2B rules engine for dynamic pricing, wholesale discount calculation, price elasticity modeling, and A2A negotiation workflows.',
+      version: '1.2.0',
+      websiteUrl: 'https://github.com/agentic-commerce/server-b2b-pricing',
+      packages: [
+        {
+          registryType: 'npm',
+          identifier: '@agentic-commerce/server-b2b-pricing',
+          version: '1.2.0',
+          transport: { type: 'stdio' }
+        }
+      ],
+      repository: {
+        url: 'https://github.com/agentic-commerce/server-b2b-pricing',
+        source: 'github'
+      }
+    },
+    _meta: {
+      'io.modelcontextprotocol.registry/official': {
+        status: 'active',
+        publishedAt: '2026-04-10T00:00:00Z',
+        updatedAt: '2026-07-15T00:00:00Z',
+        isLatest: true
+      }
+    }
   }
 ];
+

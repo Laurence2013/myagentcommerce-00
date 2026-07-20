@@ -217,6 +217,20 @@ describe('McpRegistryService', () => {
     expect(err).toContain('Registry API unavailable or blocked by CORS');
     expect(filtered.length).toBeGreaterThan(0);
   });
+
+  it('should parse and categorize Agentic AI commerce tools by keywords', () => {
+    const commerceServers = service.getCommerceServers();
+    expect(commerceServers.length).toBe(3);
+
+    const categorized = service.categorizeCommerceServers();
+    expect(categorized.transactionEscrow.length).toBeGreaterThan(0);
+    expect(categorized.catalogInfrastructure.length).toBeGreaterThan(0);
+    expect(categorized.pricingB2bRules.length).toBeGreaterThan(0);
+
+    const stripeServer = categorized.transactionEscrow.find(s => s.server.name.includes('stripe'));
+    expect(stripeServer).toBeDefined();
+  });
 });
+
 
 

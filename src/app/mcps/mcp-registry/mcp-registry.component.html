@@ -27,6 +27,45 @@
     </button>
   </div>
 
+  <div class="category-buttons-bar">
+    <button
+      type="button"
+      class="category-btn"
+      [class.active]="selectedCategory() === 'transactionEscrow'"
+      (click)="selectCategory('transactionEscrow')"
+    >
+      Transaction & Escrow
+    </button>
+
+    <button
+      type="button"
+      class="category-btn"
+      [class.active]="selectedCategory() === 'catalogInfrastructure'"
+      (click)="selectCategory('catalogInfrastructure')"
+    >
+      Catalog Infrastructure
+    </button>
+
+    <button
+      type="button"
+      class="category-btn"
+      [class.active]="selectedCategory() === 'pricingB2bRules'"
+      (click)="selectCategory('pricingB2bRules')"
+    >
+      Pricing & B2B Rules
+    </button>
+
+    @if (selectedCategory() !== 'all') {
+      <button
+        type="button"
+        class="category-btn clear-category-btn"
+        (click)="selectCategory('all')"
+      >
+        Show All
+      </button>
+    }
+  </div>
+
   @if (error()) {
     <div class="status-msg error-msg" id="mcp-error-banner" role="alert">
       {{ error() }}
@@ -35,11 +74,11 @@
 
   @if (isLoading()) {
     <div class="loading-state">Loading registry...</div>
-  } @else if (hasFetched() && servers().length === 0) {
-    <div class="empty-state">No MCP servers found.</div>
+  } @else if (hasFetched() && displayedServers().length === 0) {
+    <div class="empty-state">No MCP servers found for the selected category.</div>
   } @else if (hasFetched()) {
     <div class="servers-container" id="mcp-servers-grid">
-      @for (item of servers(); track item.server.name) {
+      @for (item of displayedServers(); track item.server.name) {
         <div class="server-card">
           <h3>{{ item.server.title || item.server.name }}</h3>
           <p>{{ item.server.description }}</p>
@@ -51,4 +90,5 @@
     </div>
   }
 </div>
+
 

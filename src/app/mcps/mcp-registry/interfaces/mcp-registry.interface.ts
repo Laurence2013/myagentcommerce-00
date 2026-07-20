@@ -61,3 +61,33 @@ export interface McpRegistryResponse {
     nextCursor?: string;
   };
 }
+
+export interface CommerceKeywordCategories {
+  transactionEscrow: string[];
+  catalogInfrastructure: string[];
+  pricingB2bRules: string[];
+}
+
+export const COMMERCE_KEYWORDS: CommerceKeywordCategories = {
+  transactionEscrow: ['payment', 'checkout', 'cart', 'invoice', 'stripe', 'ap2', 'l402', 'tokenized'],
+  catalogInfrastructure: ['shopify', 'woocommerce', 'medusa', 'catalog', 'inventory', 'sku', 'gtin'],
+  pricingB2bRules: ['pricing', 'discount', 'wholesale', 'negotiation', 'a2a', 'elasticity']
+};
+
+export interface ParsedCommerceMetadata {
+  isCommerceTool: boolean;
+  matchedCategories: Array<'transactionEscrow' | 'catalogInfrastructure' | 'pricingB2bRules'>;
+  matchedKeywords: {
+    transactionEscrow: string[];
+    catalogInfrastructure: string[];
+    pricingB2bRules: string[];
+  };
+}
+
+export interface CommerceServerCategorization {
+  transactionEscrow: McpServerResponse[];
+  catalogInfrastructure: McpServerResponse[];
+  pricingB2bRules: McpServerResponse[];
+  allCommerceServers: McpServerResponse[];
+}
+
