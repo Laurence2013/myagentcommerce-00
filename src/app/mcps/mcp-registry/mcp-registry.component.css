@@ -41,16 +41,26 @@
   transition: all 0.2s ease;
 }
 
-.category-btn:hover {
+.category-btn:hover:not(:disabled) {
   background: #334155;
   color: #f8fafc;
 }
 
-.category-btn.active {
+.category-btn.active:not(:disabled) {
   background: #2563eb;
   color: #ffffff;
   border-color: #3b82f6;
   box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
+}
+
+.category-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: #1e293b;
+  color: #64748b;
+  border-color: #1e293b;
+  box-shadow: none;
+  pointer-events: none;
 }
 
 .clear-category-btn {

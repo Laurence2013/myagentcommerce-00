@@ -24,6 +24,7 @@ export class McpRegistryComponent {
   public readonly searchInputValue = signal<string>('https://registry.modelcontextprotocol.io/');
   public readonly hasFetched = signal<boolean>(false);
   public readonly selectedCategory = signal<CategoryType>('all');
+  public readonly areCategoryButtonsDisabled = signal<boolean>(false);
 
   /**
    * Derived state: filters servers based on selected commerce category.
@@ -43,7 +44,7 @@ export class McpRegistryComponent {
       const serverCount = this.displayedServers().length;
       const loading = this.isLoading();
       const err = this.error();
-      console.log(`[McpRegistryComponent] 📊 UI State -> isLoading: ${loading}, displayedServers: ${serverCount}, category: ${this.selectedCategory()}, error: ${err ?? 'none'}`);
+      console.log(`[McpRegistryComponent] 📊 UI State -> isLoading: ${loading}, displayedServers: ${serverCount}, category: ${this.selectedCategory()}, categoryDisabled: ${this.areCategoryButtonsDisabled()}, error: ${err ?? 'none'}`);
     });
   }
 
@@ -59,6 +60,9 @@ export class McpRegistryComponent {
   }
 
   public selectCategory(cat: CategoryType): void {
+    if (this.areCategoryButtonsDisabled()) {
+      return;
+    }
     console.log(`[McpRegistryComponent] 🏷️ Category selected: ${cat}`);
     this.selectedCategory.set(cat);
     this.hasFetched.set(true);
@@ -74,10 +78,13 @@ export class McpRegistryComponent {
   }
 
   public onFetchServers(): void {
-    console.log('[McpRegistryComponent] 🔄 "Get Commerce MCP" clicked.');
+    console.log('[McpRegistryComponent] 🔄 "Get Commerce MCP" clicked. Disabling category buttons.');
     this.hasFetched.set(true);
+    this.areCategoryButtonsDisabled.set(true);
+    this.selectedCategory.set('all');
     this.registryService.fetchServers();
   }
 }
+
 
 
