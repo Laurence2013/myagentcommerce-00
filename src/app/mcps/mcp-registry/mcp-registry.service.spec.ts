@@ -82,38 +82,62 @@ describe('McpRegistryService', () => {
   });
 
   it('should initialize with mock data', () => {
-    expect(service.servers().length).toBeGreaterThan(0);
-    expect(service.isLoading()).toBe(false);
-    expect(service.error()).toBeNull();
+    let servers: any[] = [];
+    let loading = true;
+    let err: string | null = 'init';
+
+    service.filteredServers$.subscribe(res => servers = res);
+    service.isLoading$.subscribe(res => loading = res);
+    service.error$.subscribe(res => err = res);
+
+    expect(servers.length).toBeGreaterThan(0);
+    expect(loading).toBe(false);
+    expect(err).toBeNull();
   });
 
   it('should filter servers based on search query', () => {
-    service.searchQuery.set('postgres');
-    const filtered = service.filteredServers();
+    let filtered: any[] = [];
+    service.filteredServers$.subscribe(res => filtered = res);
+
+    service.searchQuery$.next('postgres');
     expect(filtered.length).toBe(1);
     expect(filtered[0].server.name).toBe('modelcontextprotocol/server-postgres');
   });
 
   it('should handle case insensitivity and spaces in search query', () => {
-    service.searchQuery.set('  POSTgres  ');
-    const filtered = service.filteredServers();
+    let filtered: any[] = [];
+    service.filteredServers$.subscribe(res => filtered = res);
+
+    service.searchQuery$.next('  POSTgres  ');
     expect(filtered.length).toBe(1);
     expect(filtered[0].server.name).toBe('modelcontextprotocol/server-postgres');
   });
 
   it('should return empty array if search query does not match any server', () => {
-    service.searchQuery.set('nonexistent-server-query');
-    const filtered = service.filteredServers();
+    let filtered: any[] = [];
+    service.filteredServers$.subscribe(res => filtered = res);
+
+    service.searchQuery$.next('nonexistent-server-query');
     expect(filtered.length).toBe(0);
   });
 
   it('should return all servers when search query is empty', () => {
-    service.searchQuery.set('   ');
-    const filtered = service.filteredServers();
-    expect(filtered.length).toBe(service.servers().length);
+    let filtered: any[] = [];
+    service.filteredServers$.subscribe(res => filtered = res);
+
+    service.searchQuery$.next('   ');
+    expect(filtered.length).toBeGreaterThan(0);
   });
 
   it('should handle successful API fetches and update servers state', () => {
+    let loading = false;
+    let err: string | null = null;
+    let filtered: any[] = [];
+
+    service.isLoading$.subscribe(res => loading = res);
+    service.error$.subscribe(res => err = res);
+    service.filteredServers$.subscribe(res => filtered = res);
+
     const customResponse = {
       servers: [
         {
@@ -137,35 +161,51 @@ describe('McpRegistryService', () => {
     };
 
     service.fetchServers();
-    expect(service.isLoading()).toBe(true);
+    expect(loading).toBe(true);
 
     const req = httpMock.expectOne('https://registry.modelcontextprotocol.io/v0.1/servers');
     expect(req.request.method).toBe('GET');
     req.flush(customResponse);
 
-    expect(service.isLoading()).toBe(false);
-    expect(service.error()).toBeNull();
-    expect(service.servers().length).toBe(1);
-    expect(service.servers()[0].server.name).toBe('custom/mcp-server');
+    expect(loading).toBe(false);
+    expect(err).toBeNull();
+    expect(filtered.length).toBe(1);
+    expect(filtered[0].server.name).toBe('custom/mcp-server');
   });
 
   it('should handle API fetches and fall back to mock data on empty response', () => {
+    let loading = false;
+    let err: string | null = null;
+    let filtered: any[] = [];
+
+    service.isLoading$.subscribe(res => loading = res);
+    service.error$.subscribe(res => err = res);
+    service.filteredServers$.subscribe(res => filtered = res);
+
     service.fetchServers();
-    expect(service.isLoading()).toBe(true);
+    expect(loading).toBe(true);
 
     const req = httpMock.expectOne('https://registry.modelcontextprotocol.io/v0.1/servers');
     expect(req.request.method).toBe('GET');
-    
+
     req.flush({ servers: [], metadata: { count: 0 } });
 
-    expect(service.isLoading()).toBe(false);
-    expect(service.error()).toBeNull();
-    expect(service.servers().length).toBeGreaterThan(0);
+    expect(loading).toBe(false);
+    expect(err).toBeNull();
+    expect(filtered.length).toBeGreaterThan(0);
   });
 
   it('should handle API fetch errors by returning mock data and setting error message', () => {
+    let loading = false;
+    let err: string | null = null;
+    let filtered: any[] = [];
+
+    service.isLoading$.subscribe(res => loading = res);
+    service.error$.subscribe(res => err = res);
+    service.filteredServers$.subscribe(res => filtered = res);
+
     service.fetchServers();
-    expect(service.isLoading()).toBe(true);
+    expect(loading).toBe(true);
 
     const req = httpMock.expectOne('https://registry.modelcontextprotocol.io/v0.1/servers');
     expect(req.request.method).toBe('GET');
@@ -173,9 +213,10 @@ describe('McpRegistryService', () => {
     // Simulate an error response (e.g. 500 Internal Server Error)
     req.flush('Error fetching servers', { status: 500, statusText: 'Internal Server Error' });
 
-    expect(service.isLoading()).toBe(false);
-    expect(service.error()).toContain('Registry API unavailable or blocked by CORS');
-    expect(service.servers().length).toBeGreaterThan(0);
+    expect(loading).toBe(false);
+    expect(err).toContain('Registry API unavailable or blocked by CORS');
+    expect(filtered.length).toBeGreaterThan(0);
   });
 });
+
 

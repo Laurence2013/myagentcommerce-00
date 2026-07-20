@@ -35,12 +35,12 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Do NOT use `ngStyle`, use `style` bindings instead
 - When using external templates/styles, use paths relative to the component TS file.
 
-## State Management
+## State Management & Reactive Architecture
 
-- Use signals for local component state
-- Use `computed()` for derived state
-- Keep state transformations pure and predictable
-- Do NOT use `mutate` on signals, use `update` or `set` instead
+- **Service & Data Layer (RxJS)**: Use RxJS (Observables, Subjects, and operators) as the core reactive style in services for async data fetching, HTTP request pipelines, stream composition, and state streams exported from services.
+- **UI & Component Layer (Signals)**: Use Angular Signals (`signal()`, `computed()`, `toSignal()`) in components for UI state, template rendering, component inputs/outputs, and derived view state.
+- Keep state transformations pure and predictable.
+- Do NOT use `mutate` on signals; use `update` or `set` instead.
 
 ## Templates
 
