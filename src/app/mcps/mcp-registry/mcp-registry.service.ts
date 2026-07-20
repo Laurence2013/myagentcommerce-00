@@ -57,7 +57,6 @@ export class McpRegistryService {
           this.serverState$.next(MOCK_MCP_SERVERS);
           this.loadingState$.next(false);
           return of(null);
-        })
-      )  .subscribe();
+        })).subscribe();
   }
 }

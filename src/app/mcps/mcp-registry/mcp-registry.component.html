@@ -1,0 +1,53 @@
+<div class="registry-container">
+  <!-- Header Section -->
+  <app-mcp-header [apiUrl]="apiUrl" />
+
+  <!-- Toolbar: Search & Refresh -->
+  <app-mcp-search-bar
+    [searchInputValue]="searchInputValue()"
+    [isLoading]="isLoading()"
+    (searchInput)="onSearchInput($event)"
+    (clearSearch)="clearSearch()"
+    (fetchServers)="onFetchServers()"
+  />
+
+  <!-- Error / CORS Warning Banner -->
+  @if (error()) {
+    <div class="warning-banner" id="mcp-error-banner" role="alert">
+      <span class="warning-icon" aria-hidden="true">⚠️</span>
+      <div class="warning-content">
+        <strong>API Status Note:</strong> {{ error() }}
+      </div>
+    </div>
+  }
+
+  <!-- Results Stats -->
+  <div class="stats-bar">
+    <span id="server-count-label">
+      Showing <strong>{{ servers().length }}</strong> MCP server{{ servers().length === 1 ? '' : 's' }}
+    </span>
+  </div>
+
+  <!-- Loading Skeleton -->
+  @if (isLoading()) {
+    <div class="grid-layout" id="loading-skeletons">
+      @for (item of skeletonItems; track $index) {
+        <app-mcp-server-skeleton />
+      }
+    </div>
+  } @else {
+    <!-- Server Cards Grid -->
+    <div class="grid-layout" id="mcp-servers-grid">
+      @for (item of servers(); track item.server.name) {
+        <app-mcp-server-card [item]="item" />
+      } @empty {
+        <div class="empty-state" id="no-servers-found">
+          <div class="empty-icon">🔎</div>
+          <h3>No MCP Servers Found</h3>
+          <p>No servers match your search criteria. Try a different search query.</p>
+          <button type="button" class="reset-btn" (click)="clearSearch()">Reset Search</button>
+        </div>
+      }
+    </div>
+  }
+</div>
