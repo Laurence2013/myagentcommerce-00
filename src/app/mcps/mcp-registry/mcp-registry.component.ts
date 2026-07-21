@@ -15,13 +15,12 @@ export type CategoryType = 'all' | 'transactionEscrow' | 'catalogInfrastructure'
 export class McpRegistryComponent {
   private readonly registryService = inject(McpRegistryService);
 
-  public readonly apiUrl = 'https://registry.modelcontextprotocol.io/v0.1/servers';
-
   // Signals for UI binding converted from service RxJS streams
   public readonly servers = toSignal(this.registryService.filteredServers$, { initialValue: [] as McpServerResponse[] });
   public readonly isLoading = toSignal(this.registryService.isLoading$, { initialValue: false });
   public readonly error = toSignal(this.registryService.error$, { initialValue: null as string | null });
 
+  public readonly registryText = signal<string>('Click below the AI commerce tools within the Official MCP Registry');
   public readonly hasFetched = signal<boolean>(false);
   public readonly selectedCategory = signal<CategoryType>('all');
   public readonly areCategoryButtonsDisabled = signal<boolean>(false);

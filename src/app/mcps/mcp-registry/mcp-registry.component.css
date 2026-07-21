@@ -115,6 +115,22 @@
   margin-bottom: 1.25rem;
 }
 
+.registry-description {
+  margin: 0 0 1rem 0;
+  color: #f8fafc;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
+}
+
+.registry-divider {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #334155 0%, rgba(51, 65, 85, 0.2) 100%);
+  margin: 0 0 1.75rem 0;
+}
+
 .category-buttons-bar {
   display: flex;
   gap: 0.75rem;
