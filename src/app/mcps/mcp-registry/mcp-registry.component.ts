@@ -1,11 +1,11 @@
-import { Component, inject, signal, computed, effect } from '@angular/core';
+import { Component, inject, signal, computed, effect, PLATFORM_ID } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { DatePipe } from '@angular/common';
+import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { McpRegistryService, parseCommerceKeywords } from './mcp-registry.service';
-import type { McpServerResponse, ParsedCommerceMetadata } from './interfaces/mcp-registry.interface';
+import type { McpServerResponse, ParsedCommerceMetadata, CommerceServerCategorization } from './interfaces/mcp-registry.interface';
 
-export type CategoryType = 'all' | 'transactionEscrow' | 'catalogInfrastructure' | 'pricingB2bRules';
+export type CategoryType = 'all' | 'transactionEscrow' | 'catalogInfrastructure' | 'pricingB2bRules' | 'agenticProtocols' | 'autonomousProcurement';
 
 @Component({
   selector: 'app-mcp-registry',
@@ -15,6 +15,7 @@ export type CategoryType = 'all' | 'transactionEscrow' | 'catalogInfrastructure'
 })
 export class McpRegistryComponent {
   private readonly registryService = inject(McpRegistryService);
+  private readonly platformId = inject(PLATFORM_ID);
 
   // Signals for UI binding converted from service RxJS streams
   public readonly servers = toSignal(this.registryService.filteredServers$, { initialValue: [] as McpServerResponse[] });
@@ -36,10 +37,15 @@ export class McpRegistryComponent {
       return allServers;
     }
     const categorization = this.registryService.categorizeCommerceServers(allServers);
-    return categorization[cat] || [];
+    return categorization[cat as keyof Omit<CommerceServerCategorization, 'allCommerceServers'>] || [];
   });
 
   constructor() {
+    // Automatically fetch live server data in the browser environment
+    if (isPlatformBrowser(this.platformId)) {
+      this.registryService.fetchServers();
+    }
+
     effect(() => {
       const serverCount = this.displayedServers().length;
       const loading = this.isLoading();
@@ -69,12 +75,10 @@ export class McpRegistryComponent {
     this.selectedCategory.set('all');
     this.hasFetched.set(false);
   }
-
   public getCommerceInfo(item: McpServerResponse): ParsedCommerceMetadata {
     return parseCommerceKeywords(item);
   }
-
-  public getCategoryLabel(cat: 'transactionEscrow' | 'catalogInfrastructure' | 'pricingB2bRules'): string {
+  public getCategoryLabel(cat: 'transactionEscrow' | 'catalogInfrastructure' | 'pricingB2bRules' | 'agenticProtocols' | 'autonomousProcurement'): string {
     switch (cat) {
       case 'transactionEscrow':
         return 'Transaction & Escrow';
@@ -82,9 +86,10 @@ export class McpRegistryComponent {
         return 'Catalog Infrastructure';
       case 'pricingB2bRules':
         return 'Pricing & B2B Rules';
+      case 'agenticProtocols':
+        return 'Agentic AI Protocols';
+      case 'autonomousProcurement':
+        return 'Autonomous Procurement';
     }
   }
 }
-
-
-

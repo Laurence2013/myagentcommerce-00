@@ -47,13 +47,17 @@ export function parseCommerceKeywords(item: McpServerResponse): ParsedCommerceMe
   const matchedKeywords = {
     transactionEscrow: COMMERCE_KEYWORDS.transactionEscrow.filter(kw => textContent.includes(kw.toLowerCase())),
     catalogInfrastructure: COMMERCE_KEYWORDS.catalogInfrastructure.filter(kw => textContent.includes(kw.toLowerCase())),
-    pricingB2bRules: COMMERCE_KEYWORDS.pricingB2bRules.filter(kw => textContent.includes(kw.toLowerCase()))
+    pricingB2bRules: COMMERCE_KEYWORDS.pricingB2bRules.filter(kw => textContent.includes(kw.toLowerCase())),
+    agenticProtocols: COMMERCE_KEYWORDS.agenticProtocols.filter(kw => textContent.includes(kw.toLowerCase())),
+    autonomousProcurement: COMMERCE_KEYWORDS.autonomousProcurement.filter(kw => textContent.includes(kw.toLowerCase()))
   };
 
-  const matchedCategories: Array<'transactionEscrow' | 'catalogInfrastructure' | 'pricingB2bRules'> = [];
+  const matchedCategories: Array<'transactionEscrow' | 'catalogInfrastructure' | 'pricingB2bRules' | 'agenticProtocols' | 'autonomousProcurement'> = [];
   if (matchedKeywords.transactionEscrow.length > 0) { matchedCategories.push('transactionEscrow'); }
   if (matchedKeywords.catalogInfrastructure.length > 0) { matchedCategories.push('catalogInfrastructure'); }
   if (matchedKeywords.pricingB2bRules.length > 0) { matchedCategories.push('pricingB2bRules'); }
+  if (matchedKeywords.agenticProtocols.length > 0) { matchedCategories.push('agenticProtocols'); }
+  if (matchedKeywords.autonomousProcurement.length > 0) { matchedCategories.push('autonomousProcurement'); }
 
   return {
     isCommerceTool: matchedCategories.length > 0,
@@ -122,6 +126,8 @@ export class McpRegistryService {
       transactionEscrow: [],
       catalogInfrastructure: [],
       pricingB2bRules: [],
+      agenticProtocols: [],
+      autonomousProcurement: [],
       allCommerceServers: []
     };
 
@@ -137,6 +143,12 @@ export class McpRegistryService {
         }
         if (info.matchedCategories.includes('pricingB2bRules')) {
           result.pricingB2bRules.push(item);
+        }
+        if (info.matchedCategories.includes('agenticProtocols')) {
+          result.agenticProtocols.push(item);
+        }
+        if (info.matchedCategories.includes('autonomousProcurement')) {
+          result.autonomousProcurement.push(item);
         }
       }
     }

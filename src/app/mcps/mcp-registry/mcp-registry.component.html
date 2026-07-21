@@ -54,6 +54,26 @@
       Pricing & B2B Rules
     </button>
 
+    <button
+      type="button"
+      class="category-btn"
+      [class.active]="selectedCategory() === 'agenticProtocols'"
+      [disabled]="areCategoryButtonsDisabled()"
+      (click)="selectCategory('agenticProtocols')"
+    >
+      Agentic AI Protocols
+    </button>
+
+    <button
+      type="button"
+      class="category-btn"
+      [class.active]="selectedCategory() === 'autonomousProcurement'"
+      [disabled]="areCategoryButtonsDisabled()"
+      (click)="selectCategory('autonomousProcurement')"
+    >
+      Autonomous Procurement
+    </button>
+
     @if (selectedCategory() !== 'all') {
       <button
         type="button"
