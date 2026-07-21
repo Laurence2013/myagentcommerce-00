@@ -1,31 +1,24 @@
 <div class="basic-registry-container">
-  <div class="controls-bar">
-    <div class="search-field">
-      <label for="mcp-search-input" class="sr-only">Search MCP Servers</label>
-      <input
-        type="text"
-        id="mcp-search-input"
-        class="basic-search-input"
-        placeholder="https://registry.modelcontextprotocol.io/"
-        [value]="searchInputValue()"
-        (input)="onSearchInput($any($event.target).value)"
-      />
+  <nav class="navigation-banner" aria-label="Main Navigation">
+    <div class="banner-brand">
+      <span class="brand-icon" aria-hidden="true">🌐</span>
+      <span class="brand-title">Agent Commerce Hub</span>
     </div>
-
-    <button
-      type="button"
-      id="fetch-registry-btn"
-      class="basic-fetch-btn"
-      [disabled]="isLoading()"
-      (click)="onFetchServers()"
-    >
-      @if (isLoading()) {
-        Fetching...
-      } @else {
-        Get Commerce MCP
-      }
-    </button>
-  </div>
+    <div class="banner-links">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="banner-link" id="nav-link-home">
+        <span class="link-icon" aria-hidden="true">🏠</span>
+        <span>Home</span>
+      </a>
+      <a routerLink="/buyer-commerce-agents" routerLinkActive="active" class="banner-link" id="nav-link-buyer-agents">
+        <span class="link-icon" aria-hidden="true">🛒</span>
+        <span>Buyer Commerce Agents</span>
+      </a>
+      <a routerLink="/seller-commerce-agents" routerLinkActive="active" class="banner-link" id="nav-link-seller-agents">
+        <span class="link-icon" aria-hidden="true">🏪</span>
+        <span>Seller Commerce Agents</span>
+      </a>
+    </div>
+  </nav>
 
   <div class="category-buttons-bar">
     <button

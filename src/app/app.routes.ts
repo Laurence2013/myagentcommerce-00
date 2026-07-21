@@ -9,6 +9,14 @@ export const routes: Routes = [
   {
     path: 'mcp-registry',
     loadComponent: () => import('./mcps/mcp-registry/mcp-registry.component').then(m => m.McpRegistryComponent)
+  },
+  {
+    path: 'buyer-commerce-agents',
+    component: HomeComponent
+  },
+  {
+    path: 'seller-commerce-agents',
+    component: HomeComponent
   }
 ];
 

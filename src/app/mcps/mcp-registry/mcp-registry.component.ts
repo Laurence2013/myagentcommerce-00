@@ -1,5 +1,6 @@
 import { Component, inject, signal, computed, effect } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { McpRegistryService } from './mcp-registry.service';
 import type { McpServerResponse } from './interfaces/mcp-registry.interface';
 
@@ -7,7 +8,7 @@ export type CategoryType = 'all' | 'transactionEscrow' | 'catalogInfrastructure'
 
 @Component({
   selector: 'app-mcp-registry',
-  imports: [],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './mcp-registry.component.html',
   styleUrl: './mcp-registry.component.css'
 })
@@ -21,7 +22,6 @@ export class McpRegistryComponent {
   public readonly isLoading = toSignal(this.registryService.isLoading$, { initialValue: false });
   public readonly error = toSignal(this.registryService.error$, { initialValue: null as string | null });
 
-  public readonly searchInputValue = signal<string>('https://registry.modelcontextprotocol.io/');
   public readonly hasFetched = signal<boolean>(false);
   public readonly selectedCategory = signal<CategoryType>('all');
   public readonly areCategoryButtonsDisabled = signal<boolean>(false);
@@ -48,17 +48,6 @@ export class McpRegistryComponent {
     });
   }
 
-  public onSearchInput(query: string): void {
-    console.log(`[McpRegistryComponent] 🔍 Search input changed: "${query}"`);
-    this.searchInputValue.set(query);
-    const trimmed = query.trim();
-    if (trimmed === '' || trimmed === 'https://registry.modelcontextprotocol.io/' || trimmed === 'https://registry.modelcontextprotocol.io/v0.1/servers') {
-      this.registryService.searchQuery$.next('');
-    } else {
-      this.registryService.searchQuery$.next(query);
-    }
-  }
-
   public selectCategory(cat: CategoryType): void {
     if (this.areCategoryButtonsDisabled()) {
       return;
@@ -71,19 +60,6 @@ export class McpRegistryComponent {
     }
   }
 
-  public clearSearch(): void {
-    console.log('[McpRegistryComponent] 🧹 Search cleared');
-    this.searchInputValue.set('');
-    this.registryService.searchQuery$.next('');
-  }
-
-  public onFetchServers(): void {
-    console.log('[McpRegistryComponent] 🔄 "Get Commerce MCP" clicked. Disabling category buttons.');
-    this.hasFetched.set(true);
-    this.areCategoryButtonsDisabled.set(true);
-    this.selectedCategory.set('all');
-    this.registryService.fetchServers();
-  }
 }
 
 
