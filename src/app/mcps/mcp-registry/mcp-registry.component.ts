@@ -59,6 +59,11 @@ export class McpRegistryComponent {
     }
   }
 
+  public clearResults(): void {
+    console.log('[McpRegistryComponent] 🧹 Results cleared');
+    this.selectedCategory.set('all');
+    this.hasFetched.set(false);
+  }
 }
 
 

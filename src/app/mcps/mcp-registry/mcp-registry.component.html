@@ -64,6 +64,17 @@
         Show All
       </button>
     }
+
+    @if (hasFetched()) {
+      <button
+        type="button"
+        class="category-btn clear-results-btn"
+        [disabled]="areCategoryButtonsDisabled()"
+        (click)="clearResults()"
+      >
+        Clear
+      </button>
+    }
   </div>
 
   @if (error()) {
