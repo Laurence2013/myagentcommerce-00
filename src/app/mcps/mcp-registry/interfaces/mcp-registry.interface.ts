@@ -63,7 +63,7 @@ export interface McpRegistryResponse {
 }
 
 export interface CommerceKeywordCategories {
-  transactionEscrow: string[];
+  transactions: string[];
   catalogInfrastructure: string[];
   pricingB2bRules: string[];
   agenticProtocols: string[];
@@ -71,18 +71,18 @@ export interface CommerceKeywordCategories {
 }
 
 export const COMMERCE_KEYWORDS: CommerceKeywordCategories = {
-  transactionEscrow: ['payment', 'checkout', 'cart', 'invoice', 'stripe', 'tokenized'],
+  transactions: ['payment', 'checkout', 'cart', 'invoice', 'stripe', 'tokenized'],
   catalogInfrastructure: ['shopify', 'woocommerce', 'medusa', 'catalog', 'inventory', 'sku', 'gtin'],
   pricingB2bRules: ['pricing', 'discount', 'wholesale', 'negotiation', 'elasticity'],
-  agenticProtocols: ['ap2', 'l402', 'a2a', 'acp', 'ucp', 'agent', 'delegation', 'wallet', 'autonomous'],
+  agenticProtocols: ['ap2', 'x402', 'a2a', 'acp', 'ucp', 'mcp'],
   autonomousProcurement: ['procurement', 'rfq', 'fulfillment', 'logistics', 'order', 'supply', 'settlement']
 };
 
 export interface ParsedCommerceMetadata {
   isCommerceTool: boolean;
-  matchedCategories: Array<'transactionEscrow' | 'catalogInfrastructure' | 'pricingB2bRules' | 'agenticProtocols' | 'autonomousProcurement'>;
+  matchedCategories: Array<'transactions' | 'catalogInfrastructure' | 'pricingB2bRules' | 'agenticProtocols' | 'autonomousProcurement'>;
   matchedKeywords: {
-    transactionEscrow: string[];
+    transactions: string[];
     catalogInfrastructure: string[];
     pricingB2bRules: string[];
     agenticProtocols: string[];
@@ -91,7 +91,7 @@ export interface ParsedCommerceMetadata {
 }
 
 export interface CommerceServerCategorization {
-  transactionEscrow: McpServerResponse[];
+  transactions: McpServerResponse[];
   catalogInfrastructure: McpServerResponse[];
   pricingB2bRules: McpServerResponse[];
   agenticProtocols: McpServerResponse[];

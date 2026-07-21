@@ -223,11 +223,11 @@ describe('McpRegistryService', () => {
     expect(commerceServers.length).toBe(3);
 
     const categorized = service.categorizeCommerceServers();
-    expect(categorized.transactionEscrow.length).toBeGreaterThan(0);
+    expect(categorized.transactions.length).toBeGreaterThan(0);
     expect(categorized.catalogInfrastructure.length).toBeGreaterThan(0);
     expect(categorized.pricingB2bRules.length).toBeGreaterThan(0);
 
-    const stripeServer = categorized.transactionEscrow.find(s => s.server.name.includes('stripe'));
+    const stripeServer = categorized.transactions.find(s => s.server.name.includes('stripe'));
     expect(stripeServer).toBeDefined();
   });
 });

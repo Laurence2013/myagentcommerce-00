@@ -5,7 +5,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { McpRegistryService, parseCommerceKeywords } from './mcp-registry.service';
 import type { McpServerResponse, ParsedCommerceMetadata, CommerceServerCategorization } from './interfaces/mcp-registry.interface';
 
-export type CategoryType = 'all' | 'transactionEscrow' | 'catalogInfrastructure' | 'pricingB2bRules' | 'agenticProtocols' | 'autonomousProcurement';
+export type CategoryType = 'all' | 'transactions' | 'catalogInfrastructure' | 'pricingB2bRules' | 'agenticProtocols' | 'autonomousProcurement';
 
 @Component({
   selector: 'app-mcp-registry',
@@ -73,9 +73,9 @@ export class McpRegistryComponent {
   public getCommerceInfo(item: McpServerResponse): ParsedCommerceMetadata {
     return parseCommerceKeywords(item);
   }
-  public getCategoryLabel(cat: 'transactionEscrow' | 'catalogInfrastructure' | 'pricingB2bRules' | 'agenticProtocols' | 'autonomousProcurement'): string {
+  public getCategoryLabel(cat: 'transactions' | 'catalogInfrastructure' | 'pricingB2bRules' | 'agenticProtocols' | 'autonomousProcurement'): string {
     switch (cat) {
-      case 'transactionEscrow':
+      case 'transactions':
         return 'Transaction & Escrow';
       case 'catalogInfrastructure':
         return 'Catalog Infrastructure';

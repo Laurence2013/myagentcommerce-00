@@ -45,15 +45,15 @@ export function parseCommerceKeywords(item: McpServerResponse): ParsedCommerceMe
   ].join(' ').toLowerCase();
 
   const matchedKeywords = {
-    transactionEscrow: COMMERCE_KEYWORDS.transactionEscrow.filter(kw => textContent.includes(kw.toLowerCase())),
+    transactions: COMMERCE_KEYWORDS.transactions.filter(kw => textContent.includes(kw.toLowerCase())),
     catalogInfrastructure: COMMERCE_KEYWORDS.catalogInfrastructure.filter(kw => textContent.includes(kw.toLowerCase())),
     pricingB2bRules: COMMERCE_KEYWORDS.pricingB2bRules.filter(kw => textContent.includes(kw.toLowerCase())),
     agenticProtocols: COMMERCE_KEYWORDS.agenticProtocols.filter(kw => textContent.includes(kw.toLowerCase())),
     autonomousProcurement: COMMERCE_KEYWORDS.autonomousProcurement.filter(kw => textContent.includes(kw.toLowerCase()))
   };
 
-  const matchedCategories: Array<'transactionEscrow' | 'catalogInfrastructure' | 'pricingB2bRules' | 'agenticProtocols' | 'autonomousProcurement'> = [];
-  if (matchedKeywords.transactionEscrow.length > 0) { matchedCategories.push('transactionEscrow'); }
+  const matchedCategories: Array<'transactions' | 'catalogInfrastructure' | 'pricingB2bRules' | 'agenticProtocols' | 'autonomousProcurement'> = [];
+  if (matchedKeywords.transactions.length > 0) { matchedCategories.push('transactions'); }
   if (matchedKeywords.catalogInfrastructure.length > 0) { matchedCategories.push('catalogInfrastructure'); }
   if (matchedKeywords.pricingB2bRules.length > 0) { matchedCategories.push('pricingB2bRules'); }
   if (matchedKeywords.agenticProtocols.length > 0) { matchedCategories.push('agenticProtocols'); }
@@ -89,9 +89,11 @@ export class McpRegistryService {
         const name = item.server.name.toLowerCase();
         const description = item.server.description.toLowerCase();
         const commerceInfo = parseCommerceKeywords(item);
-        const hasKeywordMatch = commerceInfo.matchedKeywords.transactionEscrow.includes(cleanQuery) ||
+        const hasKeywordMatch = commerceInfo.matchedKeywords.transactions.includes(cleanQuery) ||
           commerceInfo.matchedKeywords.catalogInfrastructure.includes(cleanQuery) ||
-          commerceInfo.matchedKeywords.pricingB2bRules.includes(cleanQuery);
+          commerceInfo.matchedKeywords.pricingB2bRules.includes(cleanQuery) ||
+          commerceInfo.matchedKeywords.agenticProtocols.includes(cleanQuery) ||
+          commerceInfo.matchedKeywords.autonomousProcurement.includes(cleanQuery);
         return title.includes(cleanQuery) || name.includes(cleanQuery) || description.includes(cleanQuery) || hasKeywordMatch;
       });
     })
@@ -123,7 +125,7 @@ export class McpRegistryService {
    */
   public categorizeCommerceServers(servers: McpServerResponse[] = this.serverState$.getValue()): CommerceServerCategorization {
     const result: CommerceServerCategorization = {
-      transactionEscrow: [],
+      transactions: [],
       catalogInfrastructure: [],
       pricingB2bRules: [],
       agenticProtocols: [],
@@ -135,8 +137,8 @@ export class McpRegistryService {
       const info = parseCommerceKeywords(item);
       if (info.isCommerceTool) {
         result.allCommerceServers.push(item);
-        if (info.matchedCategories.includes('transactionEscrow')) {
-          result.transactionEscrow.push(item);
+        if (info.matchedCategories.includes('transactions')) {
+          result.transactions.push(item);
         }
         if (info.matchedCategories.includes('catalogInfrastructure')) {
           result.catalogInfrastructure.push(item);
