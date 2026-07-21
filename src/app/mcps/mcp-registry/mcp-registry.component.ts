@@ -41,11 +41,6 @@ export class McpRegistryComponent {
   });
 
   constructor() {
-    // Automatically fetch live server data in the browser environment
-    if (isPlatformBrowser(this.platformId)) {
-      this.registryService.fetchServers();
-    }
-
     effect(() => {
       const serverCount = this.displayedServers().length;
       const loading = this.isLoading();

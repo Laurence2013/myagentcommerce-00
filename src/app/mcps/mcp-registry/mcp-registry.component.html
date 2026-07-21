@@ -103,7 +103,13 @@
     </div>
   }
 
-  @if (isLoading()) {
+  @if (!hasFetched() && !isLoading()) {
+    <div class="initial-prompt-state">
+      <span class="prompt-icon" aria-hidden="true">👆</span>
+      <h3>Select a Commerce Category</h3>
+      <p>Please click on one of the category buttons above to discover official MCP servers for Agentic AI Commerce.</p>
+    </div>
+  } @else if (isLoading()) {
     <div class="loading-state">Loading registry...</div>
   } @else if (hasFetched() && displayedServers().length === 0) {
     <div class="empty-state">No MCP servers found for the selected category.</div>

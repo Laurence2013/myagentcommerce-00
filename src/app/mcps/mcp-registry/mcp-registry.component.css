@@ -248,6 +248,34 @@
   color: #fca5a5;
 }
 
+.initial-prompt-state {
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  background: #1e293b;
+  border: 1px dashed #334155;
+  border-radius: 12px;
+  color: #cbd5e1;
+  margin-bottom: 2rem;
+}
+
+.prompt-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.initial-prompt-state h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  color: #f8fafc;
+}
+
+.initial-prompt-state p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
 .loading-state {
   text-align: center;
   padding: 3rem 1rem;
