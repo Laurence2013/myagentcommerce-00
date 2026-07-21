@@ -1,14 +1,15 @@
 import { Component, inject, signal, computed, effect } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { DatePipe } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { McpRegistryService } from './mcp-registry.service';
-import type { McpServerResponse } from './interfaces/mcp-registry.interface';
+import { McpRegistryService, parseCommerceKeywords } from './mcp-registry.service';
+import type { McpServerResponse, ParsedCommerceMetadata } from './interfaces/mcp-registry.interface';
 
 export type CategoryType = 'all' | 'transactionEscrow' | 'catalogInfrastructure' | 'pricingB2bRules';
 
 @Component({
   selector: 'app-mcp-registry',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, DatePipe],
   templateUrl: './mcp-registry.component.html',
   styleUrl: './mcp-registry.component.css'
 })
@@ -43,10 +44,15 @@ export class McpRegistryComponent {
       const serverCount = this.displayedServers().length;
       const loading = this.isLoading();
       const err = this.error();
-      console.log(`[McpRegistryComponent] 📊 UI State -> isLoading: ${loading}, displayedServers: ${serverCount}, category: ${this.selectedCategory()}, categoryDisabled: ${this.areCategoryButtonsDisabled()}, error: ${err ?? 'none'}`);
+      console.log(
+				`[McpRegistryComponent] 📊 UI State -> isLoading: ${loading}, 
+				displayedServers: ${serverCount}, 
+				category: ${this.selectedCategory()}, 
+				categoryDisabled: ${this.areCategoryButtonsDisabled()}, 
+				error: ${err ?? 'none'}`
+			);
     });
   }
-
   public selectCategory(cat: CategoryType): void {
     if (this.areCategoryButtonsDisabled()) {
       return;
@@ -58,11 +64,25 @@ export class McpRegistryComponent {
       this.registryService.fetchServers();
     }
   }
-
   public clearResults(): void {
     console.log('[McpRegistryComponent] 🧹 Results cleared');
     this.selectedCategory.set('all');
     this.hasFetched.set(false);
+  }
+
+  public getCommerceInfo(item: McpServerResponse): ParsedCommerceMetadata {
+    return parseCommerceKeywords(item);
+  }
+
+  public getCategoryLabel(cat: 'transactionEscrow' | 'catalogInfrastructure' | 'pricingB2bRules'): string {
+    switch (cat) {
+      case 'transactionEscrow':
+        return 'Transaction & Escrow';
+      case 'catalogInfrastructure':
+        return 'Catalog Infrastructure';
+      case 'pricingB2bRules':
+        return 'Pricing & B2B Rules';
+    }
   }
 }
 
